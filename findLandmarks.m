@@ -59,21 +59,45 @@ if(Region == 1||Region == 2)
     
 elseif(Region == 3)
     LM = zeros(3,2);
-    
-    [a1,a2] = find(BB == 1);
-    a3 = [a1,a2];
 
-    ImageOutline = transpose(BB);
+    for i = BB(1):(BB(1)+BB(3))
+        if max(ImageOutline(BB(2):(BB(2)+BB(4)),i)) == 1
+            for j = (BB(2)+BB(4)):-1:BB(2)
+                if(ImageOutline(j,i) == 1)
+                    LM(1,:) = [i,j];
+                    break;
+                end
+            end
+            break;
+        end
+    end
 
-    [b1,b2] = find(ImageOutline == 1);
-    b3 = [b1,b2];
-    
-    LM(1,:) = [a3(1,2),a3(1,1)];
-    LM(2,:) = [a3(size(a3,1),2),a3(size(a3,1),1)];
-    LM(3,:) = [b3(1,1),b3(1,2)];
-    
+    for i = (BB(1)+BB(3)):-1:BB(1)
+        if max(ImageOutline(BB(2):(BB(2)+BB(4)),i)) == 1
+            for j = (BB(2)+BB(4)):-1:BB(2)
+                if(ImageOutline(j,i) == 1)
+                    LM(2,:) = [i,j];
+                end
+            end
+            break;
+        end
+    end
+
+    for j = BB(2):(BB(2)+BB(4))
+        if max(ImageOutline(j,BB(1):(BB(1)+BB(3)))) == 1
+            for i = BB(1):(BB(1)+BB(3))
+                if(ImageOutline(j,i) == 1)
+                    LM(3,:) = [i,j];
+                end
+            end
+            break;
+        end
+    end
+
+    LM(3,1) = (LM(1,1)+LM(2,1))/2;
+
 end
-    
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end
