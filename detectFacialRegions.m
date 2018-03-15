@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function  [BBFace,BBMouth,BBLeftEye,BBRightEye,BBLeftEyebrow,BBRightEyebrow] = detectFacialRegions(I)
+function [BBFace,BBMouth,BBLeftEye,BBRightEye,BBLeftEyebrow,BBRightEyebrow] = detectFacialRegions(I)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
