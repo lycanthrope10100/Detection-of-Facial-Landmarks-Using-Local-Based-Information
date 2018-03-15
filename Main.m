@@ -27,11 +27,11 @@ for i = 37
     LELM = findLandmarks(BBLeftEye,ImageOutline,1);
     RELM = findLandmarks(BBRightEye,ImageOutline,1);
 
-    if(checkLandmarks(RELM,1) == false||checkLandmarks(LELM,1) == false)
-        if ~checkLandmarks(LELM,1)&&checkLandmarks(RELM,1) 
-            LELM = mirror(RELM,ImageOutline);
-        elseif ~checkLandmarks(RELM,1)&&checkLandmarks(LELM,1)
-            RELM = mirror(LELM,ImageOutline);
+    if(checkLandmarks(RELM) == false||checkLandmarks(LELM) == false)
+        if ~checkLandmarks(LELM)&&checkLandmarks(RELM) 
+            LELM = mirror(RELM,ImageOutline,1);
+        elseif ~checkLandmarks(RELM)&&checkLandmarks(LELM)
+            RELM = mirror(LELM,ImageOutline,1);
         end
     end
     
@@ -41,17 +41,37 @@ for i = 37
     %Optimising image
     FaceBinary = imbinarize(Face,0.25);
     ImageOutline = edge(FaceBinary,'zerocross');
-    BoundaryOutline = bwareaopen(ImageOutline,155);
-    ImageOutline = ImageOutline-BoundaryOutline;
-    
+    ImageMorph = bwareaopen(ImageOutline,150);
+    ImageOutline = ImageOutline-ImageMorph;
+
     MLM = findLandmarks(BBMouth,ImageOutline,2);
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+    %To find eyebrow landmarks
+    %Optimising image
+    ImageBinary = imbinarize(Face,0.50);
+    ImageOutline = edge(ImageBinary,'zerocross');
+    ImageMorph = bwareaopen(ImageOutline,150);
+    ImageOutline = ImageOutline-ImageMorph;
+    
+    LEBLM = findLandmarks(BBLeftEyebrow,ImageOutline,3);
+    REBLM = findLandmarks(BBRightEyebrow,ImageOutline,3);
+    
+    if(checkLandmarks(LEBLM) == false)
+            LEBLM = mirror(REBLM,ImageOutline,2);
+    end
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     %Plotting the landmarks on face
-    figure
+    figure,
     imshow(Face);
     hold on;
+    for j = 1:size(REBLM(:,1))
+        plot(REBLM(j,1),REBLM(j,2),'r.','MarkerSize',10);
+        plot(LEBLM(j,1),LEBLM(j,2),'r.','MarkerSize',10);
+    end
     for j = 1:size(RELM(:,1))
         plot(RELM(j,1),RELM(j,2),'r.','MarkerSize',10);
         plot(LELM(j,1),LELM(j,2),'r.','MarkerSize',10);
