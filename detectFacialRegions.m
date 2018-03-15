@@ -48,6 +48,21 @@ BBMouth = step(MouthDetect,Face);
 [~,I] = max(BBMouth(:,2));
 BBMouth = BBMouth(I,:);
 
+%Backup
+BBMouthB = BBMouth;
+
+%Subimage for better extraction of mouth
+SILE = [BBMouth(2),(BBMouth(2)+BBMouth(4)),BBMouth(1),(BBMouth(1)+BBMouth(3))];
+BBMouth = step(MouthDetect,Face(SILE(1):SILE(2),SILE(3):SILE(4)));
+[~,I] = min(BBMouth(:,1));
+BBMouth = BBMouth(I,:);
+if(size(BBMouth))
+    BBMouth(1) = BBMouth(1) + SILE(3);
+    BBMouth(2) = BBMouth(2) + SILE(1);
+else
+    BBMouth = BBMouthB;
+end
+
 % Mouth = insertObjectAnnotation(Face,'rectangle',BBMouth,'Mouth');
 % figure,
 % imshow(Mouth);
