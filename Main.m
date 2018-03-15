@@ -2,6 +2,7 @@
 
 %Cleanup
 clc;
+clear;
 close all;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,8 +21,8 @@ for i = 37
 
     %To find eye landmarks
     %Optimising image
-    ImageBinary = imbinarize(Face,0.25);
-    ImageOutline = edge(ImageBinary,'canny');
+    FaceBinary = imbinarize(Face,0.25);
+    ImageOutline = edge(FaceBinary,'zerocross');
 
     LELM = findLandmarks(BBLeftEye,ImageOutline,1);
     RELM = findLandmarks(BBRightEye,ImageOutline,1);
@@ -38,8 +39,10 @@ for i = 37
 
     %To find mouth landmarks
     %Optimising image
-    ImageBinary = imbinarize(Face,0.25);
-    ImageOutline = edge(ImageBinary,'canny');
+    FaceBinary = imbinarize(Face,0.25);
+    ImageOutline = edge(FaceBinary,'zerocross');
+    BoundaryOutline = bwareaopen(ImageOutline,155);
+    ImageOutline = ImageOutline-BoundaryOutline;
     
     MLM = findLandmarks(BBMouth,ImageOutline,2);
     
